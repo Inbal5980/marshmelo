@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>חדר המרשמלו - מפעל הממתקים</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FFB6D9 0%, #D4A5FF 50%, #B8E6FF 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+        
+        .container {
+            width: 100vw;
+            height: 100vh;
+            max-width: 177.78vh;
+            max-height: 56.25vw;
+            background: linear-gradient(135deg, #FFE5F1 0%, #F5E6FF 50%, #E6F7FF 100%);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 3vh;
+        }
+        
+        /* Floating marshmallows */
+        .marshmallow {
+            position: absolute;
+            font-size: 4vh;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.4;
+            z-index: 1;
+        }
+        
+        .marshmallow:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+        .marshmallow:nth-child(2) { top: 20%; left: 85%; animation-delay: 1s; }
+        .marshmallow:nth-child(3) { top: 70%; left: 15%; animation-delay: 2s; }
+        .marshmallow:nth-child(4) { top: 80%; left: 80%; animation-delay: 1.5s; }
+        .marshmallow:nth-child(5) { top: 40%; left: 5%; animation-delay: 0.5s; }
+        .marshmallow:nth-child(6) { top: 50%; left: 90%; animation-delay: 2.5s; }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+        
+        h1 {
+            color: #FF1493;
+            font-size: 5vh;
+            margin-bottom: 2vh;
+            text-shadow: 3px 3px 6px rgba(255, 255, 255, 0.8);
+            text-align: center;
+        }
+        
+        .instruction {
+            color: #8B008B;
+            font-size: 2.5vh;
+            margin-bottom: 3vh;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .warning {
+            color: #DC143C;
+            font-size: 2.2vh;
+            margin-bottom: 3vh;
+            text-align: center;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 1.5vh 3vh;
+            border-radius: 15px;
+            border: 3px dashed #FF1493;
+        }
+        
+        .template-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2vh;
+            margin-bottom: 3vh;
+        }
+        
+        .row {
+            display: flex;
+            gap: 2vh;
+            align-items: center;
+        }
+        
+        .box {
+            width: 18vh;
+            height: 10vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            border: 4px solid #8B008B;
+            font-size: 3vh;
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .box-label {
+            font-size: 2vh;
+            color: #8B008B;
+            margin-bottom: 0.5vh;
+            font-weight: bold;
+        }
+        
+        .box-green {
+            background: #90EE90;
+        }
+        
+        .box-gray {
+            background: #D3D3D3;
+        }
+        
+        .box-orange {
+            background: #FFB347;
+        }
+        
+        input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-size: 5vh;
+            font-weight: bold;
+            color: #333;
+            outline: none;
+        }
+        
+        .locked {
+            font-size: 3vh;
+            color: #666;
+            user-select: none;
+        }
+        
+        .bottom-label {
+            font-size: 2.2vh;
+            color: #8B008B;
+            margin-top: 1vh;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .check-btn {
+            background: linear-gradient(135deg, #FF69B4, #FF1493);
+            color: white;
+            border: none;
+            padding: 2vh 6vh;
+            font-size: 3vh;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            margin-top: 2vh;
+        }
+        
+        .check-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+        }
+        
+        .check-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .feedback {
+            margin-top: 2vh;
+            padding: 2vh 4vh;
+            border-radius: 20px;
+            font-size: 3vh;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        .feedback.show {
+            display: block;
+        }
+        
+        .feedback.correct {
+            background: #98FB98;
+            color: #006400;
+            border: 4px solid #228B22;
+        }
+        
+        .feedback.incorrect {
+            background: #FFB6C1;
+            color: #8B0000;
+            border: 4px solid #DC143C;
+        }
+        
+        .try-again-btn {
+            background: linear-gradient(135deg, #87CEEB, #4682B4);
+            color: white;
+            border: none;
+            padding: 1.5vh 4vh;
+            font-size: 2.5vh;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 1.5vh;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+        
+        .try-again-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Background marshmallows -->
+        <div class="marshmallow">🍥</div>
+        <div class="marshmallow">🍥</div>
+        <div class="marshmallow">🍥</div>
+        <div class="marshmallow">🍥</div>
+        <div class="marshmallow">🍥</div>
+        <div class="marshmallow">🍥</div>
+        
+        <div class="content">
+            <h1>⭐ תַּבְנִית הַמַּרְשְׁמֶלוֹ הַמָּתוֹק ⭐</h1>
+            
+            <div class="instruction">
+                שַׁבְּצוּ אֶת הַמִּסְפָּרִים הַמּוֹפִיעִים בַּחִידָה בַּמְּקוֹמוֹת הַמַּתְאִימִים בַּתַּבְנִית הַמְּתוּקָה
+            </div>
+            
+            <div class="warning">
+                ⚠️ לֹא נִתַּן לַעֲבֹר לַתַּבְנִית הַבָּאָה לִפְנֵי פִּתְרוֹן נָכוֹן שֶׁל תַּבְנִית זוֹ ⚠️
+            </div>
+            
+            <div class="template-container">
+                <div class="row">
+                    <div class="box box-green">
+                        <div class="box-label">שִׁינּוּי</div>
+                        <input type="number" id="change" />
+                    </div>
+                    <div class="box box-gray">
+                        <div class="box-label">סוֹף</div>
+                        <div class="locked">לֹא יָדוּעַ</div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="box box-orange">
+                        <input type="number" id="start" />
+                    </div>
+                </div>
+                
+                <div class="bottom-label">הַתְחָלָה</div>
+            </div>
+            
+            <button class="check-btn" onclick="checkAnswers()">🔍 בִּדְקוּ אֶת הַתְּשׁוּבָה</button>
+            
+            <div class="feedback" id="feedback"></div>
+        </div>
+    </div>
+    
+    <script>
+        const correctAnswers = {
+            change: 8,
+            start: 24
+        };
+        
+        let solved = false;
+        
+        function checkAnswers() {
+            const changeValue = parseInt(document.getElementById('change').value);
+            const startValue = parseInt(document.getElementById('start').value);
+            const feedback = document.getElementById('feedback');
+            
+            if (isNaN(changeValue) || isNaN(startValue)) {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = '🤔 אוֹפְּס, זֶה עֲדַיִן לֹא נָכוֹן<br><button class="try-again-btn" onclick="tryAgain()">🔄 נַסּוּ שׁוּב</button>';
+                return;
+            }
+            
+            if (changeValue === correctAnswers.change && startValue === correctAnswers.start) {
+                feedback.className = 'feedback correct show';
+                feedback.innerHTML = '🎉 כָּל הַכָּבוֹד! לַחֲצוּ עַל הַחֵץ הָאָפֹר כְּדֵי לַעֲבֹר לַשָּׁלָב הַבָּא! ⬅️';
+                solved = true;
+            } else {
+                feedback.className = 'feedback incorrect show';
+                feedback.innerHTML = '🤔 אוֹפְּס, זֶה עֲדַיִן לֹא נָכוֹן<br><button class="try-again-btn" onclick="tryAgain()">🔄 נַסּוּ שׁוּב</button>';
+            }
+        }
+        
+        function tryAgain() {
+            document.getElementById('feedback').classList.remove('show');
+        }
+        
+        // Allow Enter key to check answers
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkAnswers();
+            }
+        });
+    </script>
+</body>
+</html>
